@@ -1,8 +1,19 @@
 import requests
 from bs4 import BeautifulSoup
 
+team_num = 10
+start_year = 2012
+end_year = 2021
+
+# Select League
+premier_league = 0
+serie_a = 1
+bundesliga = 2
+ligue_1 = 3
+laliga = 4
+
 # 리그 내에서 발생하는 지출액과 수익을 수집하기 위한 함수
-def get_club_expenditure_few_year(start_year, end_year, team_num, league_num):
+def get_club_expenditure_few_year(start_year, end_year, team_num):
     total_clubs_info = []
     for_return_club_info = []
 
@@ -20,7 +31,8 @@ def get_club_expenditure_few_year(start_year, end_year, team_num, league_num):
     fr'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={start_year}&saison_id_bis={end_year}&land_id=50&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0',
     fr'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={start_year}&saison_id_bis={end_year}&land_id=157&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0']
 
-    req = requests.get(url[league_num], headers=headers)
+    # selected url crawling
+    req = requests.get(url[premier_league], headers=headers)
 
     if req.status_code == requests.codes.ok:
             soup = BeautifulSoup(req.text, 'lxml')
@@ -38,18 +50,9 @@ def get_club_expenditure_few_year(start_year, end_year, team_num, league_num):
 
     return for_return_club_info
 
-team_num = 10
-print("Enter your want start year : ")
-start_year = input()
-print("Enter your want end year : ")
-end_year = input()
-print("Select League")
-print("0 : premier_league | 1 : serie_a | 2 : bundesliga | 3 : ligue_1 | 4 : laliga")
-league_num = input()
-
 # 원하는 시작 연도와 끝 연도를 입력 받고 함수 호출
 for i in range(int(start_year), int(end_year) + 1):
-    total_club_info = get_club_expenditure_few_year(i, i, team_num, int(league_num))
+    total_club_info = get_club_expenditure_few_year(i, i, team_num)
     for i in range(0, team_num):
         print(total_club_info[i])
     print()
