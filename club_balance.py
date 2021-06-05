@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 team_num = 10
 start_year = 2012
-end_year = 2021
+end_year = 2020
 
 # Select League
 premier_league = 0
@@ -11,6 +11,7 @@ serie_a = 1
 bundesliga = 2
 ligue_1 = 3
 laliga = 4
+
 
 # 리그 내에서 발생하는 지출액과 수익을 수집하기 위한 함수
 def get_club_expenditure_few_year(start_year, end_year, team_num):
@@ -49,10 +50,15 @@ def get_club_expenditure_few_year(start_year, end_year, team_num):
                 for_return_club_info[i].append(total_clubs_info[j][i].text)
 
     return for_return_club_info
-
+    
 # 원하는 시작 연도와 끝 연도를 입력 받고 함수 호출
-for i in range(int(start_year), int(end_year) + 1):
-    total_club_info = get_club_expenditure_few_year(i, i, team_num)
-    for i in range(0, team_num):
-        print(total_club_info[i])
-    print()
+def print_total_club_info():
+    for i in range(int(start_year), int(end_year) + 1):
+        total_club_info = get_club_expenditure_few_year(i, i, team_num)
+        for i in range(0, team_num):
+            print(total_club_info[i])
+        print()
+
+
+if __name__ == "__main__":
+    print_total_club_info()

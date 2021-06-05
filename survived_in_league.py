@@ -28,7 +28,7 @@ def get_club_expenditure_few_year(current_year):
     headers = {'User-Agent': 
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
-    req = requests.get(url[bundesliga], headers=headers)
+    req = requests.get(url[premier_league], headers=headers)
 
     if req.status_code == requests.codes.ok:
             soup = BeautifulSoup(req.text, 'lxml')
@@ -44,30 +44,35 @@ def get_club_expenditure_few_year(current_year):
 
     return for_return_club_info
 
-first_club_arr = get_club_expenditure_few_year(want_year)
 
-count = 0
+def tidy_result():
+    count = 0
 
-# 마지막 결과값을 저장하기 위한 배열
-result_arr = []
+    # 마지막 결과값을 저장하기 위한 배열
+    result_arr = []
 
-# 리그에서 한 번이라도 강등을 당한 팀을 제외하기 위한 반복문
-for i in range(1, (2021 - want_year)):
-    comparsion_arr = get_club_expenditure_few_year((want_year + i))
-    
-    for j in range(1, team_num):
-        for z in range(1, team_num):
-            if first_club_arr[j][0] == comparsion_arr[z][0]:
-                count += 1
+    first_club_arr = get_club_expenditure_few_year(want_year)
+
+    # 리그에서 한 번이라도 강등을 당한 팀을 제외하기 위한 반복문
+    for i in range(1, (2021 - want_year)):
+        comparsion_arr = get_club_expenditure_few_year((want_year + i))
         
-        if count == 0:
-            first_club_arr[j][0] = '0'
-        
-        count = 0
+        for j in range(1, team_num):
+            for z in range(1, team_num):
+                if first_club_arr[j][0] == comparsion_arr[z][0]:
+                    count += 1
+            
+            if count == 0:
+                first_club_arr[j][0] = '0'
+            
+            count = 0
 
-# 리그에서 한 번도 강등을 당하지 않은 팀만 추가
-for i in range(1, team_num):
-    if first_club_arr[i][0] != '0':
-        result_arr.append(first_club_arr[i][0])
+    # 리그에서 한 번도 강등을 당하지 않은 팀만 추가
+    for i in range(1, team_num):
+        if first_club_arr[i][0] != '0':
+            result_arr.append(first_club_arr[i][0])
 
-print(result_arr)
+    print(result_arr)
+
+if __name__ == "__main__":
+    tidy_result()
