@@ -75,8 +75,4 @@ def append_data_to_survived_club_arr(survived_club, total_club):
                 if survived_club[survived_num][0] == total_club[year][total_num][1]:
                     survived_club[survived_num].append(total_club[year][total_num][2])
 
-    #print(total_club_info)
-    for i in range(0, survived_num):
-        print(survived_club[i])
-
     return survived_club
