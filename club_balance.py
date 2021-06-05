@@ -64,7 +64,7 @@ def print_total_club_info(league_num, survived_clubs):
         total_club_info.append(get_club_expenditure_few_year(i, team_num, league_num))
     
     #print(total_club_info)
-    append_data_to_survived_club_arr(survived_clubs, total_club_info)
+    return append_data_to_survived_club_arr(survived_clubs, total_club_info)
 
 def append_data_to_survived_club_arr(survived_club, total_club):
     survived_club_num = len(survived_club)
@@ -78,6 +78,5 @@ def append_data_to_survived_club_arr(survived_club, total_club):
     #print(total_club_info)
     for i in range(0, survived_num):
         print(survived_club[i])
-    
-if __name__ == "__main__":
-    print_total_club_info(premier_league, survived_club_in_premier_league)
+
+    return survived_club
