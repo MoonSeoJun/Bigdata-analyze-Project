@@ -4,16 +4,16 @@ import requests
 from bs4 import BeautifulSoup
 
 # get the survived clubs in leagues
-def get_survived_clubs_crawling(current_year, want_club, team_num):
+def get_survived_clubs_crawling(current_year, want_league, team_num):
     total_clubs_info = []
     for_return_club_info = []
 
     # 원하는 리그 선택
-    url = [fr'https://www.transfermarkt.com/serie-a/startseite/wettbewerb/IT1/plus/?saison_id={current_year}', 
-    fr'https://www.transfermarkt.com/premier-league/startseite/wettbewerb/GB1/plus/?saison_id={current_year}',
+    url = [fr'https://www.transfermarkt.com/premier-league/startseite/wettbewerb/GB1/plus/?saison_id={current_year}', 
+    fr'https://www.transfermarkt.com/serie-a/startseite/wettbewerb/IT1/plus/?saison_id={current_year}',
     fr'https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L1/plus/?saison_id={current_year}',
-    fr'https://www.transfermarkt.com/laliga/startseite/wettbewerb/ES1/plus/?saison_id={current_year}',
-    fr'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1/plus/?saison_id={current_year}']
+    fr'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1/plus/?saison_id={current_year}',
+    fr'https://www.transfermarkt.com/laliga/startseite/wettbewerb/ES1/plus/?saison_id={current_year}']
 
     for i in range(0,team_num):
         total_clubs_info.append([])
@@ -22,7 +22,7 @@ def get_survived_clubs_crawling(current_year, want_club, team_num):
     headers = {'User-Agent': 
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
-    req = requests.get(url[want_club], headers=headers)
+    req = requests.get(url[want_league], headers=headers)
 
     if req.status_code == requests.codes.ok:
             soup = BeautifulSoup(req.text, 'lxml')
@@ -40,17 +40,17 @@ def get_survived_clubs_crawling(current_year, want_club, team_num):
     return for_return_club_info
 
 
-def get_survived_clubs(want_club, want_year, team_num):
+def get_survived_clubs(want_league, want_year, team_num):
     count = 0
 
     # 마지막 결과값을 저장하기 위한 배열
     result_arr = []
 
-    first_club_arr = get_survived_clubs_crawling(want_year, want_club, team_num)
+    first_club_arr = get_survived_clubs_crawling(want_year, want_league, team_num)
 
     # 리그에서 한 번이라도 강등을 당한 팀을 제외하기 위한 반복문
     for i in range(1, (2021 - want_year)):
-        comparsion_arr = get_survived_clubs_crawling((want_year + i), want_club, team_num)
+        comparsion_arr = get_survived_clubs_crawling((want_year + i), want_league, team_num)
         
         for j in range(1, team_num):
             for z in range(1, team_num):
