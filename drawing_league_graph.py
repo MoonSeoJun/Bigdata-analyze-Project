@@ -2,18 +2,8 @@ from typing import NewType
 import matplotlib.pyplot as plt
 import numpy as np
 import club_balance
-'''
-premier_league = [['Chelsea', 96, 132, 260, 208, 45], 
-                ['ManCity', 208, 215, 317, 78, 159], 
-                ['Arsenal', 26, 113, 152, 80, 160],
-                ['ManUtd', 156, 185, 198, 82, 226],
-                ['Liverpool', 126, 79, 173, 182, 10],
-                ['Spurs', 71, 83, 123, 0, 148],
-                ['Everton', 48, 86, 203, 99, 121],
-                ['Souton', 60, 68, 61, 62, 58],       
-                ['W.Ham Utd', 52, 83, 56, 100, 119],    
-                ['C. Palace', 28, 101, 48, 11, 7]]
-'''
+import survived_in_league
+
 def drawing_graph(league_arr):
     labels = [league_arr[i][0] for i in range(0, len(league_arr))]
     year_15 = [league_arr[i][1] for i in range(0, len(league_arr))]
@@ -66,4 +56,8 @@ def call_drawing_function(league_num, survived_club):
     drawing_graph(graph_arr)
 
 if __name__ == "__main__":
-    call_drawing_function(club_balance.premier_league, club_balance.survived_club_in_premier_league)
+    league = club_balance.serie_a
+    start_year = 2015
+    team_num = 21
+    survived_club = survived_in_league.get_survived_clubs(league, start_year, team_num)
+    call_drawing_function(league, survived_club)
