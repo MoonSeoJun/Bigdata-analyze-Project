@@ -45,6 +45,9 @@ def get_club_expenditure(league_num, survived_clubs, start_year, team_num, end_y
     total_club_info = []
     for i in range(start_year, end_year):
         total_club_info.append(get_club_expenditure_few_year_crawling(i, team_num, league_num))
+        print(f"Get {i} year club expenditure Crawling Complete")
+
+    print("Get club expenditure Complete")
 
     return append_data_to_survived_club_arr(survived_clubs, total_club_info, team_num, start_year, end_year)
 

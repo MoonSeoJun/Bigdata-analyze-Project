@@ -61,6 +61,7 @@ def get_survived_clubs(want_league, want_year, team_num, end_year):
                 first_club_arr[j][0] = '0'
             
             count = 0
+        print(f"Get survived clubs Crawling[{i}] Complete")
 
     # 리그에서 한 번도 강등을 당하지 않은 팀만 추가
     for i in range(1, team_num):
@@ -70,5 +71,7 @@ def get_survived_clubs(want_league, want_year, team_num, end_year):
 
     for i in range(0, len(result_arr)):
         result_arr[i] = [result_arr[i]]
+
+    print("Get survived club Complete!")
 
     return result_arr
