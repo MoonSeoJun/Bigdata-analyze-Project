@@ -1,3 +1,4 @@
+from bs4.builder import TreeBuilder
 import requests
 from bs4 import BeautifulSoup
 
@@ -16,7 +17,7 @@ laliga = 4
 survived_club_in_premier_league = [['Chelsea FC'], ['Manchester City'], ['Arsenal FC'], ['Manchester United'], ['Liverpool FC'], ['Tottenham Hotspur'], ['Everton FC'], ['Southampton FC'], ['West Ham United'], ['Crystal Palace'], ['Leicester City']]
 survived_club_in_serie_a = [['Juventus FC'], ['AS Roma'], ['Inter Milan'], ['SSC Napoli'], ['AC Milan'], ['SS Lazio'], ['ACF Fiorentina'], ['UC Sampdoria'], ['Genoa CFC'], ['Udinese Calcio'], ['Torino FC'], ['Bologna FC 1909'], ['US Sassuolo'], ['Atalanta BC']]
 survived_club_in_bundesliga = [['Bayern Munich'], ['Borussia Dortmund'], ['VfL Wolfsburg'], ['FC Schalke 04'], ['Bayer 04 Leverkusen'], ['Borussia Mönchengladbach'], ['TSG 1899 Hoffenheim'], ['Eintracht Frankfurt'], ['Hertha BSC'], ['1.FSV Mainz 05'], ['FC Augsburg'], ['SV Werder Bremen']]
-survived_club_in_laliga = ['Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Valencia', 'Sevilla FC', 'Athletic', 'Real Sociedad', 'Villarreal', 'Real Betis', 'Celta de Vigo', 'SD Eibar']
+survived_club_in_laliga = [['Real Madrid'], ['FC Barcelona'], ['Atlético Madrid'], ['Valencia CF'], ['Sevilla FC'], ['Athletic Bilbao'], ['Real Sociedad'], ['Villarreal CF'], ['Real Betis Balompié'], ['Celta de Vigo'], ['SD Eibar']]
 survived_club_in_ligue_1 = [['Paris Saint-Germain'], ['Olympique Lyon'], ['Olympique Marseille'], ['AS Saint-Étienne'], ['FC Girondins Bordeaux'], ['Stade Rennais FC'], ['LOSC Lille'], ['OGC Nice'], ['Montpellier HSC'], ['FC Nantes']]
 
 # 리그 내에서 발생하는 지출액과 수익을 수집하기 위한 함수
@@ -60,19 +61,19 @@ def get_club_expenditure_few_year(want_year, team_num, league_select):
 # 원하는 시작 연도와 끝 연도를 입력 받고 함수 호출
 def print_total_club_info(league_num, survived_clubs):
     total_club_info = []
-    for i in range(int(start_year), int(end_year) + 1):
+    for i in range(start_year, end_year + 1):
         total_club_info.append(get_club_expenditure_few_year(i, team_num, league_num))
-    
-    #print(total_club_info)
+
     return append_data_to_survived_club_arr(survived_clubs, total_club_info)
 
 def append_data_to_survived_club_arr(survived_club, total_club):
-    survived_club_num = len(survived_club)
-
     for year in range(0, 5):
-        for survived_num in range(0, survived_club_num):
-            for total_num in range(0 ,team_num):
-                if survived_club[survived_num][0] == total_club[year][total_num][1]:
-                    survived_club[survived_num].append(total_club[year][total_num][2])
+        for i in range(0, len(survived_club)):
+            for j in range(0 ,team_num):
+                if survived_club[i][0] == total_club[year][j][1]: # 클럽 이름 비교
+                    survived_club[i].append(total_club[year][j][2])
+
+            if len(survived_club[i]) < year + 2:
+                survived_club[i].append('5')
 
     return survived_club

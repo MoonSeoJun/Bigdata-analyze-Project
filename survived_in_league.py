@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
-team_num = 21 # Bundesliga의 경우 리그에 존재하는 팀이 18개이기 때문에 19를 사용함. 나머지는 21
-want_year = 2008 # 원하는 시작 연도
+team_num = 19 # Bundesliga의 경우 리그에 존재하는 팀이 18개이기 때문에 19를 사용함. 나머지는 21
+want_year = 2015 # 원하는 시작 연도
 
 serie_a = 0
 premier_league = 1
@@ -28,7 +28,7 @@ def get_club_expenditure_few_year(current_year):
     headers = {'User-Agent': 
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
-    req = requests.get(url[premier_league], headers=headers)
+    req = requests.get(url[ligue_1], headers=headers)
 
     if req.status_code == requests.codes.ok:
             soup = BeautifulSoup(req.text, 'lxml')
