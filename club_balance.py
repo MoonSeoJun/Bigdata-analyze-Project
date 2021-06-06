@@ -7,11 +7,11 @@ start_year = 2015
 end_year = 2020
 
 # Select League
-serie_a = 0
-premier_league = 1
+premier_league = 0
+serie_a = 1 
 bundesliga = 2
-laliga = 3
-ligue_1 = 4
+ligue_1 = 3
+laliga = 4
 
 # 리그 내에서 발생하는 지출액과 수익을 수집하기 위한 함수
 def get_club_expenditure_few_year(want_year, team_num, league_select):
