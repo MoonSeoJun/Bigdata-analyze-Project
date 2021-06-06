@@ -2,14 +2,6 @@ from bs4.builder import TreeBuilder
 import requests
 from bs4 import BeautifulSoup
 
-
-# Select League
-premier_league = 0
-serie_a = 1 
-bundesliga = 2
-ligue_1 = 3
-laliga = 4
-
 # 리그 내에서 발생하는 지출액과 수익을 수집하기 위한 함수
 def get_club_expenditure_few_year_crawling(want_year, team_num, league_select):
     total_clubs_info = []
