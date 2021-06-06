@@ -2,9 +2,6 @@ from bs4.builder import TreeBuilder
 import requests
 from bs4 import BeautifulSoup
 
-team_num = 25
-start_year = 2015
-end_year = 2020
 
 # Select League
 premier_league = 0
@@ -14,7 +11,7 @@ ligue_1 = 3
 laliga = 4
 
 # 리그 내에서 발생하는 지출액과 수익을 수집하기 위한 함수
-def get_club_expenditure_few_year(want_year, team_num, league_select):
+def get_club_expenditure_few_year_crawling(want_year, team_num, league_select):
     total_clubs_info = []
     for_return_club_info = []
 
@@ -52,15 +49,15 @@ def get_club_expenditure_few_year(want_year, team_num, league_select):
     return for_return_club_info
     
 # 원하는 시작 연도와 끝 연도를 입력 받고 함수 호출
-def print_total_club_info(league_num, survived_clubs):
+def get_club_expenditure(league_num, survived_clubs, start_year, team_num, end_year):
     total_club_info = []
-    for i in range(start_year, end_year + 1):
-        total_club_info.append(get_club_expenditure_few_year(i, team_num, league_num))
+    for i in range(start_year, end_year):
+        total_club_info.append(get_club_expenditure_few_year_crawling(i, team_num, league_num))
 
-    return append_data_to_survived_club_arr(survived_clubs, total_club_info)
+    return append_data_to_survived_club_arr(survived_clubs, total_club_info, team_num, start_year, end_year)
 
-def append_data_to_survived_club_arr(survived_club, total_club):
-    for year in range(0, 5):
+def append_data_to_survived_club_arr(survived_club, total_club, team_num, start_year, end_year):
+    for year in range(0, (end_year - start_year)):
         for i in range(0, len(survived_club)):
             for j in range(0 ,team_num):
                 if survived_club[i][0] == total_club[year][j][1]: # 클럽 이름 비교

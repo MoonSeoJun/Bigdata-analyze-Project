@@ -40,7 +40,7 @@ def get_survived_clubs_crawling(current_year, want_league, team_num):
     return for_return_club_info
 
 
-def get_survived_clubs(want_league, want_year, team_num):
+def get_survived_clubs(want_league, want_year, team_num, end_year):
     count = 0
 
     # 마지막 결과값을 저장하기 위한 배열
@@ -49,7 +49,7 @@ def get_survived_clubs(want_league, want_year, team_num):
     first_club_arr = get_survived_clubs_crawling(want_year, want_league, team_num)
 
     # 리그에서 한 번이라도 강등을 당한 팀을 제외하기 위한 반복문
-    for i in range(1, (2021 - want_year)):
+    for i in range(1, (end_year - want_year)):
         comparsion_arr = get_survived_clubs_crawling((want_year + i), want_league, team_num)
         
         for j in range(1, team_num):
