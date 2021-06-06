@@ -1,16 +1,10 @@
+from matplotlib.pyplot import legend
+from numpy import int8
 import requests
 from bs4 import BeautifulSoup
 
-team_num = 19 # Bundesliga의 경우 리그에 존재하는 팀이 18개이기 때문에 19를 사용함. 나머지는 21
-want_year = 2015 # 원하는 시작 연도
-
-serie_a = 0
-premier_league = 1
-bundesliga = 2
-laliga = 3
-ligue_1 = 4
-
-def get_club_expenditure_few_year(current_year):
+# get the survived clubs in leagues
+def get_survived_clubs(current_year, want_club, team_num):
     total_clubs_info = []
     for_return_club_info = []
 
@@ -28,7 +22,7 @@ def get_club_expenditure_few_year(current_year):
     headers = {'User-Agent': 
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
-    req = requests.get(url[ligue_1], headers=headers)
+    req = requests.get(url[want_club], headers=headers)
 
     if req.status_code == requests.codes.ok:
             soup = BeautifulSoup(req.text, 'lxml')
@@ -36,26 +30,27 @@ def get_club_expenditure_few_year(current_year):
             club = soup.find("div", {"class":"responsive-table"})
             info_of_club = club.find_all("td")
 
-            for i in range(0,(10 * team_num)): # 한 개의 큼럽 당 10개의 정보가 담겨있음
+            for i in range(1,(10 * team_num)): # 한 개의 큼럽 당 10개의 정보가 담겨있음
                 total_clubs_info[i%10].append(info_of_club[i])
 
     for i in range(1, team_num):
-        for_return_club_info[i].append(total_clubs_info[2][i].text)
+        new_string = total_clubs_info[1][i].text
+        for_return_club_info[i].append(new_string[0:len(new_string) - 1]) # 문자열 마지막 띄어쓰기를 지우기 위함
 
     return for_return_club_info
 
 
-def tidy_result():
+def tidy_result(want_club, want_year, team_num):
     count = 0
 
     # 마지막 결과값을 저장하기 위한 배열
     result_arr = []
 
-    first_club_arr = get_club_expenditure_few_year(want_year)
+    first_club_arr = get_survived_clubs(want_year, want_club, team_num)
 
     # 리그에서 한 번이라도 강등을 당한 팀을 제외하기 위한 반복문
     for i in range(1, (2021 - want_year)):
-        comparsion_arr = get_club_expenditure_few_year((want_year + i))
+        comparsion_arr = get_survived_clubs((want_year + i), want_club, team_num)
         
         for j in range(1, team_num):
             for z in range(1, team_num):
@@ -72,7 +67,8 @@ def tidy_result():
         if first_club_arr[i][0] != '0':
             result_arr.append(first_club_arr[i][0])
 
-    print(result_arr)
 
-if __name__ == "__main__":
-    tidy_result()
+    for i in range(0, len(result_arr)):
+        result_arr[i] = [result_arr[i]]
+
+    return result_arr
