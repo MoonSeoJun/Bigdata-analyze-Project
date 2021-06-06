@@ -20,11 +20,11 @@ def drawing_graph(league_arr):
 
     width = 0.5
 
-    plt.bar(range(len(year_15)), year_15, width=width, label='2015')
-    plt.bar(range(len(year_16)), year_16, bottom=year_15, width=width, label='2016')
-    plt.bar(x, year_17, bottom=c_bottom, width=width, label='2017')
-    plt.bar(x, year_18, bottom=d_bottom, width=width, label='2018')
-    plt.bar(x, year_19, bottom=f_bottom, width=width, label='2019')
+    plt.bar(range(len(year_15)), year_15, width=width, label='2015/2016')
+    plt.bar(range(len(year_16)), year_16, bottom=year_15, width=width, label='2016/2017')
+    plt.bar(x, year_17, bottom=c_bottom, width=width, label='2017/2018')
+    plt.bar(x, year_18, bottom=d_bottom, width=width, label='2018/2019')
+    plt.bar(x, year_19, bottom=f_bottom, width=width, label='2019/2020')
     plt.xticks(fontsize=7, rotation=45)
     plt.xlabel("Club name")
     plt.ylabel("Expenditure(million €)")
@@ -56,8 +56,8 @@ def call_drawing_function(league_num, survived_club):
     drawing_graph(graph_arr)
 
 if __name__ == "__main__":
-    league = club_balance.serie_a
+    league = club_balance.bundesliga
     start_year = 2015
-    team_num = 21
+    team_num = 19 # Default - 21 |if you want to drawing Bundesliga expenditure graph, you change the number into 19
     survived_club = survived_in_league.get_survived_clubs(league, start_year, team_num)
     call_drawing_function(league, survived_club)
