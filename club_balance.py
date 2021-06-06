@@ -7,18 +7,11 @@ start_year = 2015
 end_year = 2020
 
 # Select League
-premier_league = 0
-serie_a = 1
+serie_a = 0
+premier_league = 1
 bundesliga = 2
-ligue_1 = 3
-laliga = 4
-
-# Survived club from 2015 to 2020
-survived_club_in_premier_league = [['Chelsea FC'], ['Manchester City'], ['Arsenal FC'], ['Manchester United'], ['Liverpool FC'], ['Tottenham Hotspur'], ['Everton FC'], ['Southampton FC'], ['West Ham United'], ['Crystal Palace'], ['Leicester City']]
-survived_club_in_serie_a = [['Juventus FC'], ['AS Roma'], ['Inter Milan'], ['SSC Napoli'], ['AC Milan'], ['SS Lazio'], ['ACF Fiorentina'], ['UC Sampdoria'], ['Genoa CFC'], ['Udinese Calcio'], ['Torino FC'], ['Bologna FC 1909'], ['US Sassuolo'], ['Atalanta BC']]
-survived_club_in_bundesliga = [['Bayern Munich'], ['Borussia Dortmund'], ['VfL Wolfsburg'], ['FC Schalke 04'], ['Bayer 04 Leverkusen'], ['Borussia Mönchengladbach'], ['TSG 1899 Hoffenheim'], ['Eintracht Frankfurt'], ['Hertha BSC'], ['1.FSV Mainz 05'], ['FC Augsburg'], ['SV Werder Bremen']]
-survived_club_in_laliga = [['Real Madrid'], ['FC Barcelona'], ['Atlético Madrid'], ['Valencia CF'], ['Sevilla FC'], ['Athletic Bilbao'], ['Real Sociedad'], ['Villarreal CF'], ['Real Betis Balompié'], ['Celta de Vigo'], ['SD Eibar']]
-survived_club_in_ligue_1 = [['Paris Saint-Germain'], ['Olympique Lyon'], ['Olympique Marseille'], ['AS Saint-Étienne'], ['FC Girondins Bordeaux'], ['Stade Rennais FC'], ['LOSC Lille'], ['OGC Nice'], ['Montpellier HSC'], ['FC Nantes']]
+laliga = 3
+ligue_1 = 4
 
 # 리그 내에서 발생하는 지출액과 수익을 수집하기 위한 함수
 def get_club_expenditure_few_year(want_year, team_num, league_select):
