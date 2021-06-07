@@ -48,17 +48,23 @@ def arr_index_string_to_int(league_arr, survived_club, end_year):
     for i in range(0, len(survived_club)):
         for j in range(1, (end_year - start_year + 1)):
             new_string = ''.join(filter(str.isalnum, league_arr[i][j]))
-            if len(new_string) == 6:
-                league_arr[i][j] = int(new_string[0:3])
-            elif len(new_string) == 5:
-                league_arr[i][j] = int(new_string[0:2])
+            if new_string[-1] == 'm':
+                league_arr[i][j] = int(new_string[0:-1]) / 100
+                '''
+                elif len(new_string) == 5:
+                    league_arr[i][j] = int(new_string[0:-1])
+                else:
+                    league_arr[i][j] = int(new_string[0:-1])
+                '''
+            elif new_string[-1] == 'h':
+                league_arr[i][j] = int(new_string[0:-2]) / 1000
             else:
-                league_arr[i][j] = int(new_string[0:1])
+                league_arr[i][j] = int(new_string)
     
     return league_arr
 
-def call_drawing_function(league_num, survived_club, start_year, team_num, end_year):
-    league_arr = club_balance.get_club_expenditure(league_num, survived_club, start_year, team_num, end_year)
+def call_drawing_function(league_num, survived_club, start_year, end_year):
+    league_arr = club_balance.get_club_expenditure(league_num, survived_club, start_year, end_year)
     graph_arr = arr_index_string_to_int(league_arr, survived_club, end_year)
     drawing_graph(graph_arr, start_year, end_year)
 
@@ -82,13 +88,12 @@ if __name__ == "__main__":
             print("-----------------------------------------")
             print("!This league number is not exist!")
             print("Try Input again\n")
+        elif end_year > 2021:
+            print("-----------------------------------------")
+            print("!21/22 season was not updated!")
+            print("Try Input again\n")
         else:
             break
 
-    if league == 2:
-        team_num = 19 # Exist club in Bundesliga are 18
-    else:
-        team_num = 21 # Exist club in other league are 20
-
-    survived_club = survived_in_league.get_survived_clubs(league, start_year, team_num, end_year)
-    call_drawing_function(league, survived_club, start_year, team_num, end_year)
+    survived_club = survived_in_league.get_survived_clubs(league, start_year, end_year)
+    call_drawing_function(league, survived_club, start_year, end_year)
