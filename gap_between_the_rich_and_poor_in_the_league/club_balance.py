@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 
 # 리그 내에서 발생하는 지출액과 수익을 수집하기 위한 함수
 def get_club_expenditure_few_year_crawling(want_year, league_select):
+    print("Crawling Start")
+
     headers = {'User-Agent': 
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
@@ -18,6 +20,7 @@ def get_club_expenditure_few_year_crawling(want_year, league_select):
     req = requests.get(url[league_select], headers=headers)
 
     if req.status_code == requests.codes.ok:
+            print(req.status_code)
             total_clubs_info = []
             for_return_club_info = []
 
@@ -41,6 +44,8 @@ def get_club_expenditure_few_year_crawling(want_year, league_select):
             if j != 1:
                 for_return_club_info[i].append(total_clubs_info[j][i].text)
 
+    print("Crawling End")
+
     return for_return_club_info, team_num
     
 # 원하는 시작 연도와 끝 연도를 입력 받고 함수 호출
@@ -61,11 +66,18 @@ def append_data_to_survived_club_arr(survived_club, total_club, start_year, end_
             for j in range(0 ,team_num):
                 if survived_club[i][0] == total_club[year][j][1]: # 클럽 이름 비교
                     if total_club[year][j][2] == '-':
-                        survived_club[i].append('0')
+                        survived_club[i].append(0)
                     else:
-                        survived_club[i].append(total_club[year][j][2])
+                        new_string = ''.join(filter(str.isalnum, total_club[year][j][2]))
+                        if new_string[-1] == 'm':
+                            survived_club[i].append(int(new_string[0:-1]) / 100)
+                        elif new_string[-1] == 'h':
+                            survived_club[i].append(int(new_string[0:-2]) / 1000)
+                        else:
+                            survived_club[i].append(int(new_string))
+                    break
 
             if len(survived_club[i]) < year + 2:
-                survived_club[i].append('0')
+                survived_club[i].append(0.5)
 
     return survived_club

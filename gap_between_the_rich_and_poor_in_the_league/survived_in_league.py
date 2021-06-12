@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 
 # get the survived clubs in leagues
 def get_survived_clubs_crawling(current_year, want_league):
+    print("Crawling start")
     # 원하는 리그 선택
     url = [fr'https://www.transfermarkt.com/premier-league/startseite/wettbewerb/GB1/plus/?saison_id={current_year}', 
     fr'https://www.transfermarkt.com/serie-a/startseite/wettbewerb/IT1/plus/?saison_id={current_year}',
@@ -19,6 +20,7 @@ def get_survived_clubs_crawling(current_year, want_league):
     req = requests.get(url[want_league], headers=headers)
 
     if req.status_code == requests.codes.ok:
+            print("Status : ", req.status_code)
             total_clubs_info = []
             for_return_club_info = []
 
@@ -34,12 +36,14 @@ def get_survived_clubs_crawling(current_year, want_league):
                 total_clubs_info.append([])
                 for_return_club_info.append([])
 
-            for i in range(1, info_len): # 한 개의 큼럽 당 10개의 정보가 담겨있음
+            for i in range(1, info_len): # 한 개의 클럽 당 10개의 정보가 담겨있음
                 total_clubs_info[i%10].append(info_of_club[i])
 
     for i in range(1, team_num):
         new_string = total_clubs_info[1][i].text
         for_return_club_info[i].append(new_string[0:len(new_string) - 1]) # 문자열 마지막 띄어쓰기를 지우기 위함
+
+    print("Crawling End")
 
     return for_return_club_info, team_num
 
@@ -60,6 +64,7 @@ def get_survived_clubs(want_league, start_year, end_year):
             for z in range(1, team_num_second):
                 if first_club_arr[j][0] == comparsion_arr[z][0]:
                     count += 1
+                    break
             
             if count == 0:
                 first_club_arr[j][0] = '0'
