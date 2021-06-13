@@ -8,7 +8,8 @@ def get_clubs_trophies(select_team):
 
     url = ['https://www.transfermarkt.com/manchester-city/erfolge/verein/281',
     'https://www.transfermarkt.com/arsenal-fc/erfolge/verein/11',
-    'https://www.transfermarkt.com/chelsea-fc/erfolge/verein/631']
+    'https://www.transfermarkt.com/chelsea-fc/erfolge/verein/631',
+    'https://www.transfermarkt.com/paris-saint-germain/erfolge/verein/583']
 
     # selected url crawling
     req = requests.get(url[select_team], headers=headers)

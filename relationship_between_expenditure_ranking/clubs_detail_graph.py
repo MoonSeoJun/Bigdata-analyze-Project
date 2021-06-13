@@ -9,12 +9,15 @@ class Club_data:
         self.start_year = start_year
         self.end_year = end_year
 
-        self.league_num = [0]
+        self.league_num = [0, 1]
 
         self.premier_league_trophies_kind = ["English Champion", "English League Cup winner", "FA Cup Winner", "Champions League Winner", "Europa League Winner"]
-        self.man_city = [0, "Manchester City", "ManCity"]
-        self.arsenal = [1, "Arsenal FC", "Arsenal"]
-        self.chelsea = [2, "Chelsea FC", "Chelsea"]
+        self.ligue1_league_trophies_kind = ["French Champion", "French league cup winner", "French Cup winner ", "Champions League Winner", "Europa League Winner"]
+
+        self.man_city = [0, "Manchester City", "ManCity", "Premier League"]
+        self.arsenal = [1, "Arsenal FC", "Arsenal", "Premier League"]
+        self.chelsea = [2, "Chelsea FC", "Chelsea", "Premier League"]
+        self.psg = [3, "Paris Saint-Germain", "ParisSG", "Ligue 1"]
 
         self.label = []
         self.club_expenditure = []
@@ -22,17 +25,18 @@ class Club_data:
 
         self.club_trophies = []
         self.premier_league_club_trophies = [[],[],[],[],[]]
+        self.ligue1_league_club_trophies = [[],[],[],[],[]]
 
-    def set_premier_league_club_trophies(self):
-        for i in range(0, len(self.premier_league_trophies_kind)):
-            self.premier_league_club_trophies[i].append(0)
+    def set_club_trophies(self, array_for_get_trophies):
+        for i in range(0, len(array_for_get_trophies)):
+            array_for_get_trophies[i].append(0)
 
-    def get_graph_needs(self, club_for_trophies,club_for_expenditure, club_for_ranking):
+    def get_graph_needs(self, league_num, club_for_trophies, club_for_expenditure, club_for_ranking, kind_of_league, array_for_get_trophies):
         self.club_trophies = get_clubs_trophies(club_for_trophies)
         for year in range(self.start_year, self.end_year):
-            self.set_premier_league_club_trophies()
-            expenditure_result = get_club_expenditure_few_year_crawling(year,self.league_num[0])
-            ranking_result = get_clubs_ranking_crawling(year, self.league_num[0])
+            self.set_club_trophies(array_for_get_trophies)
+            expenditure_result = get_club_expenditure_few_year_crawling(year,self.league_num[league_num])
+            ranking_result = get_clubs_ranking_crawling(year, self.league_num[league_num])
             self.label.append(f'{str(year)[-2:]}/{str(year+1)[-2:]}')
 
             for i in range(0, len(ranking_result)):
@@ -53,11 +57,17 @@ class Club_data:
 
             for i in range(0, len(self.club_trophies)):
                 if self.club_trophies[i][0] == f'{str(year)[-2:]}/{str(year+1)[-2:]}':
-                    for j in range(0, len(self.premier_league_trophies_kind)):
-                        if self.club_trophies[i][1] == self.premier_league_trophies_kind[j]:
-                            self.premier_league_club_trophies[j][-1] += 1
+                    if kind_of_league == "Ligue 1":
+                        for j in range(0, len(self.ligue1_league_trophies_kind)):
+                            if self.club_trophies[i][1] == self.ligue1_league_trophies_kind[j]:
+                                self.ligue1_league_club_trophies[j][-1] += 1
 
-    def drawing_graph(self):
+                    elif kind_of_league == "Premier League":
+                        for j in range(0, len(self.premier_league_trophies_kind)):
+                            if self.club_trophies[i][1] == self.premier_league_trophies_kind[j]:
+                                self.premier_league_club_trophies[j][-1] += 1
+
+    def drawing_graph(self, kind_of_league):
         width = 0.5
 
         fig, axs = plt.subplots(nrows=2, ncols=2)
@@ -73,17 +83,29 @@ class Club_data:
         axs[0, 1].set_title("Club's season League Ranking")
         axs[0, 1].set_ylabel("Ranking")
         axs[0, 1].legend(loc='upper right')
-
-        add_1 = np.add(self.premier_league_club_trophies[0], self.premier_league_club_trophies[1])
-        add_2 = np.add(add_1, self.premier_league_club_trophies[2])
-        add_3 = np.add(add_2, self.premier_league_club_trophies[3])
         
-        axs[1, 0].bar(self.label, self.premier_league_club_trophies[0], width=width, label="English Champion")
-        axs[1, 0].bar(self.label, self.premier_league_club_trophies[1], width=width, bottom=self.premier_league_club_trophies[0], label="English League Cup")
-        axs[1, 0].bar(self.label, self.premier_league_club_trophies[2], width=width, bottom=add_1, label="FA Cup")
-        axs[1, 0].bar(self.label, self.premier_league_club_trophies[3], width=width, bottom=add_2, label="Champions League")
-        axs[1, 0].bar(self.label, self.premier_league_club_trophies[4], width=width, bottom=add_3, label="Europa League")
+        if kind_of_league == "Ligue 1":
+            add_1 = np.add(self.ligue1_league_club_trophies[0], self.ligue1_league_club_trophies[1])
+            add_2 = np.add(add_1, self.ligue1_league_club_trophies[2])
+            add_3 = np.add(add_2, self.ligue1_league_club_trophies[3])
+            
+            axs[1, 0].bar(self.label, self.ligue1_league_club_trophies[0], width=width, label="French Champion")
+            axs[1, 0].bar(self.label, self.ligue1_league_club_trophies[1], width=width, bottom=self.ligue1_league_club_trophies[0], label="French league Cup")
+            axs[1, 0].bar(self.label, self.ligue1_league_club_trophies[2], width=width, bottom=add_1, label="French Cup")
+            axs[1, 0].bar(self.label, self.ligue1_league_club_trophies[3], width=width, bottom=add_2, label="Champions League")
+            axs[1, 0].bar(self.label, self.ligue1_league_club_trophies[4], width=width, bottom=add_3, label="Europa League")
 
+        elif kind_of_league == "Premier League":
+            add_1 = np.add(self.premier_league_club_trophies[0], self.premier_league_club_trophies[1])
+            add_2 = np.add(add_1, self.premier_league_club_trophies[2])
+            add_3 = np.add(add_2, self.premier_league_club_trophies[3])
+            
+            axs[1, 0].bar(self.label, self.premier_league_club_trophies[0], width=width, label="English Champion")
+            axs[1, 0].bar(self.label, self.premier_league_club_trophies[1], width=width, bottom=self.premier_league_club_trophies[0], label="English League Cup")
+            axs[1, 0].bar(self.label, self.premier_league_club_trophies[2], width=width, bottom=add_1, label="FA Cup")
+            axs[1, 0].bar(self.label, self.premier_league_club_trophies[3], width=width, bottom=add_2, label="Champions League")
+            axs[1, 0].bar(self.label, self.premier_league_club_trophies[4], width=width, bottom=add_3, label="Europa League")
+            
         axs[1, 0].set_title("Club's season Trophies")
         axs[1, 0].set_ylabel("Trophies")
         axs[1, 0].legend(loc='upper right')
@@ -95,5 +117,5 @@ class Club_data:
 
 if __name__ == "__main__":
     graphs_datas = Club_data(2015, 2021)
-    graphs_datas.get_graph_needs(graphs_datas.man_city[0], graphs_datas.man_city[1], graphs_datas.man_city[2])
-    graphs_datas.drawing_graph()
+    graphs_datas.get_graph_needs(0, graphs_datas.chelsea[0], graphs_datas.chelsea[1], graphs_datas.chelsea[2], graphs_datas.chelsea[3], graphs_datas.premier_league_club_trophies)
+    graphs_datas.drawing_graph(graphs_datas.chelsea[3])
