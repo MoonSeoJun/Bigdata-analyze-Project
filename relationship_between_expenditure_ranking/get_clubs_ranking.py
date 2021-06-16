@@ -7,7 +7,10 @@ def get_clubs_ranking_crawling(want_year, league_select):
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
     url = [f'https://www.transfermarkt.com/premier-league/startseite/wettbewerb/GB1/plus/?saison_id={want_year}',
-    f'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1/plus/?saison_id={want_year}']
+    f'https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1/plus/?saison_id={want_year}',
+    f'https://www.transfermarkt.com/laliga/startseite/wettbewerb/ES1/plus/?saison_id={want_year}',
+    f'https://www.transfermarkt.com/serie-a/startseite/wettbewerb/IT1/plus/?saison_id={want_year}',
+    f'https://www.transfermarkt.com/bundesliga/startseite/wettbewerb/L1/plus/?saison_id={want_year}']
 
     # selected url crawling
     req = requests.get(url[league_select], headers=headers)

@@ -7,8 +7,11 @@ def get_club_expenditure_few_year_crawling(want_year, league_select):
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
     # 리그에서 시작 연도와 끝 연도 동안 지출한 금액과 수익을 받아오기 위한 URL
-    url = [fr'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={want_year}&saison_id_bis={want_year}&land_id=189&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0',
-    fr'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={want_year}&saison_id_bis={want_year}&land_id=50&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0']
+    url = [f'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={want_year}&saison_id_bis={want_year}&land_id=189&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0',
+    f'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={want_year}&saison_id_bis={want_year}&land_id=50&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0',
+    f'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={want_year}&saison_id_bis={want_year}&land_id=157&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0',
+    f'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={want_year}&saison_id_bis={want_year}&land_id=75&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0',
+    f'https://www.transfermarkt.com/transfers/einnahmenausgaben/statistik/plus/0?ids=a&sa=&saison_id={want_year}&saison_id_bis={want_year}&land_id=40&nat=&pos=&altersklasse=&w_s=&leihe=&intern=0']
 
     # selected url crawling
     req = requests.get(url[league_select], headers=headers)
