@@ -1,11 +1,20 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+from tabulate import tabulate
 from .get_clubs_expenditure import get_club_expenditure_few_year_crawling
 from .get_clubs_ranking import get_clubs_ranking_crawling
 from .get_clubs_trophies import get_clubs_trophies
 
 class Club_data:
     def __init__(self, start_year, end_year):
+
+        premier_league_num = 0
+        ligue_1_num = 1
+        laliga_num = 2
+        serie_A_num = 3
+        bundesliga_num = 4
+
         self.start_year = start_year
         self.end_year = end_year
 
@@ -17,15 +26,18 @@ class Club_data:
         self.serieA_league_trophies_kind = ["Italian Champion", "Italian Cup winner", "Champions League Winner", "Europa League Winner"]
         self.bundesliga_league_trophies_kind = ["German Champion", "German Cup winner ", "Champions League Winner", "Europa League Winner"]
 
-        self.man_city = [0, "Manchester City", "ManCity", 0, self.premier_league_trophies_kind]
-        self.arsenal = [1, "Arsenal FC", "Arsenal", 0, self.premier_league_trophies_kind]
-        self.chelsea = [2, "Chelsea FC", "Chelsea", 0, self.premier_league_trophies_kind]
-        self.psg = [3, "Paris Saint-Germain", "ParisSG", 1, self.ligue1_league_trophies_kind]
-        self.barcelona = [4, "FC Barcelona", "Barcelona", 2, self.laliga_league_trophies_kind]
-        self.real_madrid = [5, "Real Madrid", "RealMadrid", 2, self.laliga_league_trophies_kind]
-        self.juventus = [6, "Juventus FC", "Juventus", 3, self.serieA_league_trophies_kind]
-        self.liverpool = [7, "Liverpool FC", "Liverpool", 0, self.premier_league_trophies_kind]
-        self.bayern_munich = [8, "Bayern Munich", "FCBayern", 4, self.bundesliga_league_trophies_kind]
+        self.man_city = [0, "Manchester City", "ManCity", premier_league_num, self.premier_league_trophies_kind]
+        self.arsenal = [1, "Arsenal FC", "Arsenal", premier_league_num, self.premier_league_trophies_kind]
+        self.chelsea = [2, "Chelsea FC", "Chelsea", premier_league_num, self.premier_league_trophies_kind]
+        self.psg = [3, "Paris Saint-Germain", "ParisSG", ligue_1_num, self.ligue1_league_trophies_kind]
+        self.barcelona = [4, "FC Barcelona", "Barcelona", laliga_num, self.laliga_league_trophies_kind]
+        self.real_madrid = [5, "Real Madrid", "RealMadrid", laliga_num, self.laliga_league_trophies_kind]
+        self.juventus = [6, "Juventus FC", "Juventus", serie_A_num, self.serieA_league_trophies_kind]
+        self.liverpool = [7, "Liverpool FC", "Liverpool", premier_league_num, self.premier_league_trophies_kind]
+        self.bayern_munich = [8, "Bayern Munich", "FCBayern", bundesliga_num, self.bundesliga_league_trophies_kind]
+        self.lyon = [9, "Olympique Lyon", "OlympiqueLyon", ligue_1_num, self.ligue1_league_trophies_kind]
+        self.schalke = [10, "FC Schalke 04", "FCSchalke04", bundesliga_num, self.bundesliga_league_trophies_kind]
+        self.inter = [11, "Inter Milan", "Inter", serie_A_num, self.serieA_league_trophies_kind]
 
         self.label = []
         self.club_expenditure = []
@@ -99,6 +111,23 @@ class Club_data:
 
         axs[1, 1].remove()
 
+
+        dataframe = {
+            "Expenditure":self.club_expenditure,
+            "Ranking":self.club_ranking,
+            f"{kind_of_league_trophies[0]}":self.league_trophies_array[0],
+            f"{kind_of_league_trophies[1]}":self.league_trophies_array[1],
+            f"{kind_of_league_trophies[2]}":self.league_trophies_array[2],
+            f"{kind_of_league_trophies[3]}":self.league_trophies_array[3],
+        }
+
+        if(len(kind_of_league_trophies) > 4):
+            dataframe[kind_of_league_trophies[4]] = self.league_trophies_array[4]
+
+        df = pd.DataFrame(dataframe, index=[f"{i}/{i + 1}" for i in range(int(self.start_year), int(self.end_year))])
+
+        print(df)
+
         plt.show()
     
     def trophies_drawing_graph_kind(self, axs, ligue_club_trophies, ligue_trophies_kind):
@@ -117,17 +146,11 @@ class Club_data:
             axs[1, 0].bar(self.label, ligue_club_trophies[4], width=width, bottom=add_3, label=ligue_trophies_kind[4])
 
 if __name__ == "__main__":
-    premier_league_num = 0
-    ligue_1_num = 1
-    laliga_num = 2
-    serie_A_num = 3
-    bundesliga_num = 4
-
     print("----Relationship between expenditure and ranking----")
     print("Select the club")
     print("| ---Premier League--- | ---Ligue 1--- | ---La liga---  | ---Serie A--- | ---Bundesliga--- |")
-    print("|  0. Manchest City    |   3. PSG      | 4. Barcelona   |  6. Juventus  | 8. Bayern Munich |")
-    print("|  1. Arsenal FC       |               | 5. Real Madrid |               |                  |")
+    print("|  0. Manchest City    |   3. PSG      | 4. Barcelona   |  6. Juventus  |  8. Bayern Munich|")
+    print("|  1. Arsenal FC       |   9.Lyon      | 5. Real Madrid | 11. Inter     | 10. Schalke 04   |")
     print("|  2. Chelsea FC       |               |                |               |                  |")
     print("|  7. Liverpool FC     |               |                |               |                  |")
 
@@ -151,7 +174,10 @@ if __name__ == "__main__":
     "5":graphs_datas.real_madrid, 
     "6":graphs_datas.juventus,
     "7":graphs_datas.liverpool,
-    "8":graphs_datas.bayern_munich}
+    "8":graphs_datas.bayern_munich,
+    "9":graphs_datas.lyon,
+    "10":graphs_datas.schalke,
+    "11":graphs_datas.inter}
 
     selected_club = club_dict[select_club_num]
 

@@ -1,6 +1,8 @@
 from typing import NewType
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+from tabulate import tabulate
 from . import club_balance
 from . import survived_in_league
 
@@ -10,10 +12,23 @@ def drawing_graph(league_arr, start_year, end_year):
     width = 0.5
     count = 0
 
+    for_dataframe_arr = []
+
+    for i in range(0, end_year - start_year):
+        for_dataframe_arr.append([])
+
+    dataframe = {
+        "Club Name":labels,
+    }
+
     for year in range(1, end_year - start_year + 1):
         year_count = end_year - (end_year - start_year - year + 1)
 
         current_bar = [league_arr[i][year] for i in range(0, len(league_arr))]
+        
+        for_dataframe_arr[year - 1] = current_bar
+
+        dataframe[f"{start_year + year - 1}/{start_year + year}"] = [for_dataframe_arr[year - 1][j] for j in range(0, len(for_dataframe_arr[0]))] # 데이터 셋을 위해 배열에 저장
 
         year_1 = [league_arr[i][year - 2] for i in range(0, len(league_arr))]
         year_2 = [league_arr[i][year - 1] for i in range(0, len(league_arr))]
@@ -32,6 +47,11 @@ def drawing_graph(league_arr, start_year, end_year):
         else:
             add_arr = np.add(add_arr, year_2)
             plt.bar(x, current_bar, bottom=add_arr, width=width, label=f'{year_count}/{(year_count + 1)}')
+
+
+    df = pd.DataFrame(dataframe,index=[i for i in range(1, len(labels) + 1)])
+
+    print(df)
 
     plt.xticks(fontsize=7, rotation=45)
     plt.xlabel("Club name")
